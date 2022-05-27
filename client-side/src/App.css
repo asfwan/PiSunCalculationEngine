@@ -2,6 +2,16 @@
   text-align: center;
 }
 
+.form {
+  display: inline-block;
+  justify-content: center;
+}
+
+.form input {
+  width: 250px;
+  margin: 10px;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -35,4 +45,8 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.mt-10 {
+  margin-top: 10 !important;
 }
