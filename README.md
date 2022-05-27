@@ -72,6 +72,8 @@ npm install && npm run start
 
 ## 🎈 Usage <a name="usage"></a>
 
+![alt text](https://github.com/asfwan/PiSunCalculationEngine/blob/main/Screenshot_PiSun.png?raw=true)
+
 
 
 ## ⛏️ Built Using <a name = "built_using"></a>
