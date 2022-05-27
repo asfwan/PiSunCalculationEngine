@@ -41,7 +41,7 @@ export class SunCard extends React.Component {
           <ListGroup variant="flush">
             <ListGroup.Item>PI Value: {this.state.piValue}</ListGroup.Item>
             <ListGroup.Item>
-              Sun Circumference: {this.state.sunCircumference}
+              Sun Circumference: {this.state.sunCircumference} km
             </ListGroup.Item>
           </ListGroup>
           <Button
