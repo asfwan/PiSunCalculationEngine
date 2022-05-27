@@ -1,10 +1,6 @@
 import * as exp from "express";
 const router = exp.Router();
-import { database } from "../database";
-
-router.get("/", (req: any, res: any) => {
-  res.send("Pi Test");
-});
+import { PiValuesQuery } from "../database/PiValuesQuery";
 
 const oddNumberWithoutOneGenerator = (numberOfOddNumbers: number) => {
   const arrayOfOddNumbers = [];
@@ -47,71 +43,65 @@ const calculatePiWithNConstant = (n: number) => {
   };
 };
 
+const getPiValueEntryCounts = async () => {
+  try {
+    const countResult: any[] = await PiValuesQuery.count();
+    return countResult[0].count;
+  } catch (err) {
+    return { err };
+  }
+};
+
+const getLatestPiValueEntry = async (): Promise<{
+  id: number;
+  sample_number: number;
+  pi_value: number;
+  err?: any;
+}> => {
+  try {
+    const countResult: any[] = await PiValuesQuery.selectLatest();
+    return countResult[0];
+  } catch (err) {
+    return { err, id: 0, sample_number: 0, pi_value: 0 };
+  }
+};
+
+// this returns pi value based on sample number
 router.get("/calculate_pi/:numberOfOddNumbers", (req: any, res: any) => {
   const result = calculatePiWithNConstant(req.params.numberOfOddNumbers);
-
   res.send({ result });
 });
 
-class QueryString {
-  static select = () => {
-    return "select * from pi_values";
-  };
-  static selectLatest = () => {
-    return "select * from pi_values order by id desc";
-  };
-  static entryCount = () => {
-    return "select count(*) as count";
-  };
-  static insert = (sample_number: string, pi_value: string) => {
-    return (
-      "insert into pi_values (sample_number,pi_value) values(" +
-      sample_number +
-      "," +
-      pi_value +
-      ")"
-    );
-  };
-}
-
-class Query {
-  static exec = async (queryString: string): Promise<object[]> => {
-    return await new Promise((resolve, reject) => {
-      database.query(queryString, (err, res) => {
-        if (err) reject(err);
-        resolve(res as object[]);
-      });
-    });
-  };
-  static select = () => {
-    return this.exec(QueryString.select());
-  };
-  static selectLatest = () => {
-    return this.exec(QueryString.selectLatest());
-  };
-  static count = () => {
-    return this.exec(QueryString.entryCount());
-  };
-}
-
+// this returns pi value based on most accurate sample number and calculates one more times and stores the most accurate value found
 router.get("/calculate_pi", async (req: any, res: any) => {
-  // const queryString = QueryString.entryCount();
-  // db.query(queryString, (err: any, result: any) => {
-  //   if (err) res.status(400).json(err);
-  //   else res.status(200).json(result);
-  // });
-  const count: Array<object> = await Query.count();
-  console.log(count[0]);
-  // const result = calculatePiWithNConstant(count[0].count);
-  res.send({ count });
+  const entryCounts = await getPiValueEntryCounts();
+  // just a basic error handling
+  if (entryCounts.err) return res.status(400).json(entryCounts.err);
+  const sampleNumber = entryCounts * 1000;
+  const calculatedPiResult = calculatePiWithNConstant(sampleNumber);
+  await PiValuesQuery.insert(
+    calculatedPiResult.sample_number,
+    calculatedPiResult.pi_value
+  );
+  res.send({ entryCounts, calculatedPiResult });
 });
 
-router.get("/best_pi_value", (req: any, res: any) => {
-  //
+router.get("/best_pi_value", async (req: any, res: any) => {
+  const mostAccuratePiValue = await getLatestPiValueEntry();
+  // just a basic error handling
+  if (mostAccuratePiValue.err)
+    return res.status(400).json(mostAccuratePiValue.err);
+  res.send({ mostAccuratePiValue });
 });
 
-router.get("/sun_circumference", (req: any, res: any) => {
-  //
+router.get("/sun_circumference", async (req: any, res: any) => {
+  const radiusOfSun = 696340; // in kilometre
+  const mostAccuratePiValue = await getLatestPiValueEntry();
+  // just a basic error handling
+  if (mostAccuratePiValue.err)
+    return res.status(400).json(mostAccuratePiValue.err);
+  const circumferenceOfSun = 2 * mostAccuratePiValue.pi_value * radiusOfSun; // formula for circumference is 2*pi*r
+  res.send({ circumferenceOfSun });
 });
 
 module.exports = router;
