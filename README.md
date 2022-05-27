@@ -16,37 +16,34 @@
 
 ## 🧐 About <a name = "about"></a>
 
-Write about 1-2 paragraphs describing the purpose of your project.
+This project aims to calculate PI value in increasing accuracy manner. The more the process is run, the value of PI is calculated more accurately.
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
+The project provides a web page to show:
+1. PI Value (the value will be more accurate as you press on the 'Improve PI Value' button)
+2. Sun circumference (the circumference is tied to the latest and most accurate value of PI)
 
 ### Prerequisites
 
-What things you need to install the software and how to install them.
-
-```
-Give examples
-```
+To run this project in your computer, you need to have these software installed:
+1. Docker (for mysql)
+2. Nodejs (preferrably v16 - for client side and server side)
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running.
+Disclaimer:
+You will see a docker-compose.yml that is still WIP. The script will not work yet.
+You will also find and deployer_script.sh which is also WIP. The script is meant to ease deployment, but it does not work yet.
 
-Say what the step will be
+From here, we have to use quite manual steps to start-up the project.
 
-```
-Give the example
-```
+Firstly, make sure you have docker installed and running.
+Secondly, make sure that you can run npm commands from your preferred terminal.
 
-And repeat
+So, let us begin.
 
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo.
+Unzip the source code to a folder using an unzipper software. 
 
 ## 🎈 Usage <a name="usage"></a>
 
