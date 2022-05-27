@@ -43,15 +43,36 @@ Secondly, make sure that you can run npm commands from your preferred terminal.
 
 So, let us begin.
 
-Unzip the source code to a folder using an unzipper software. 
+1. Unzip the source code to a folder using an unzipper software. 
+2. Open a terminal and use this command to change directory to mysql and build the mysql container:
+```
+cd mysql
+docker build -t pisunsql . && docker run -p 3306:3306 -d pisunsql;
+```
+3. You will see that docker starts creating a mysql container.
+4. Now when the docker is done with the process, open a new terminal at the root of project.
+5. Now, change directory to the server-side:
+```
+cd ../server-side; 
+```
+6. Let's install and run the server-side code of the project:
+```
+npm install && npm run start
+```
+7. Now let's open another terminal for the client-side. Start the terminal at the root of the project.
+8. Now you need to install and run the client-side just like the server-side:
+```
+cd client-side
+npm install && npm run start
+```
+9. A browser should be automatically opened for you and navigates to localhost:3000
+10. But if that does not happen automatically, you should open your preferred browser and go to http://localhost:3000
+11. Now you can enjoy what this project has done for you. 
+12. Have fun!
 
 ## 🎈 Usage <a name="usage"></a>
 
-Add notes about how to use the system.
 
-## 🚀 Deployment <a name = "deployment"></a>
-
-Add additional notes about how to deploy this on a live system.
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 
