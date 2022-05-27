@@ -100,8 +100,9 @@ router.get("/sun_circumference", async (req: any, res: any) => {
   // just a basic error handling
   if (mostAccuratePiValue.err)
     return res.status(400).json(mostAccuratePiValue.err);
-  const circumferenceOfSun = 2 * mostAccuratePiValue.pi_value * radiusOfSun; // formula for circumference is 2*pi*r
-  res.send({ circumferenceOfSun });
+  const piValue = mostAccuratePiValue.pi_value;
+  const circumferenceOfSun = 2 * piValue * radiusOfSun; // formula for circumference is 2*pi*r
+  res.send({ circumferenceOfSun, piValue });
 });
 
 module.exports = router;
