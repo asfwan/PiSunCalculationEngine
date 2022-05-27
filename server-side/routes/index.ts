@@ -20,7 +20,7 @@ enum Sign {
   negative = -1,
 }
 
-const calculatePiWithNConstant = (n) => {
+const calculatePiWithNConstant = (n: number) => {
   // using: leibniz
   // formula: pi/4 = 1-1/3+1/5-1/7+1/9...
   let sign = Sign.negative;
