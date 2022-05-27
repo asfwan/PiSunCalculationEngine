@@ -6,6 +6,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/v1", routes);
+app.use("/", routes);
 
 app.listen("3001", () => {});
