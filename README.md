@@ -74,7 +74,8 @@ npm install && npm run start
 
 ![alt text](https://github.com/asfwan/PiSunCalculationEngine/blob/main/Screenshot_PiSun.png?raw=true)
 
-
+1. To improve the PI Value, press the "Improve PI Value" button.
+2. To fetch latest value of the Sun Circumference, press on the "Fetch Latest Value" button.
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 
