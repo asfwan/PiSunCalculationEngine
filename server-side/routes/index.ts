@@ -1,6 +1,6 @@
-const exp = require("express");
+import * as exp from "express";
 const router = exp.Router();
-const db = require("../database");
+import { database } from "../database";
 
 router.get("/", (req: any, res: any) => {
   res.send("Pi Test");
@@ -41,6 +41,10 @@ const calculatePiWithNConstant = (n: number) => {
   });
   // result is in form of pi/4 . So pi = pi/4 * 4
   result *= 4;
+  return {
+    sample_number: n,
+    pi_value: result,
+  };
 };
 
 router.get("/calculate_pi/:numberOfOddNumbers", (req: any, res: any) => {
@@ -49,9 +53,57 @@ router.get("/calculate_pi/:numberOfOddNumbers", (req: any, res: any) => {
   res.send({ result });
 });
 
-router.get("/calculate_pi", (req: any, res: any) => {
-  // console.log(db);
-  res.send({});
+class QueryString {
+  static select = () => {
+    return "select * from pi_values";
+  };
+  static selectLatest = () => {
+    return "select * from pi_values order by id desc";
+  };
+  static entryCount = () => {
+    return "select count(*) as count";
+  };
+  static insert = (sample_number: string, pi_value: string) => {
+    return (
+      "insert into pi_values (sample_number,pi_value) values(" +
+      sample_number +
+      "," +
+      pi_value +
+      ")"
+    );
+  };
+}
+
+class Query {
+  static exec = async (queryString: string): Promise<object[]> => {
+    return await new Promise((resolve, reject) => {
+      database.query(queryString, (err, res) => {
+        if (err) reject(err);
+        resolve(res as object[]);
+      });
+    });
+  };
+  static select = () => {
+    return this.exec(QueryString.select());
+  };
+  static selectLatest = () => {
+    return this.exec(QueryString.selectLatest());
+  };
+  static count = () => {
+    return this.exec(QueryString.entryCount());
+  };
+}
+
+router.get("/calculate_pi", async (req: any, res: any) => {
+  // const queryString = QueryString.entryCount();
+  // db.query(queryString, (err: any, result: any) => {
+  //   if (err) res.status(400).json(err);
+  //   else res.status(200).json(result);
+  // });
+  const count: Array<object> = await Query.count();
+  console.log(count[0]);
+  // const result = calculatePiWithNConstant(count[0].count);
+  res.send({ count });
 });
 
 router.get("/best_pi_value", (req: any, res: any) => {
